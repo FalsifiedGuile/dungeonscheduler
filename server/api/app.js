@@ -3,8 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 const userRoutes = require("../routes/user");
+const userScheduleRoutes = require("../routes/user-schedule");
 
 app.use(cors())
 app.use(bodyParser.json());
@@ -35,7 +36,7 @@ app.post('/api/posts', (req, res, next) => {
 //     message: "Posts fetched succesfully!",
 //   });
 // });
-
+app.use("/api/schedule", userScheduleRoutes);
 app.use("/api/user", userRoutes);
 
 module.exports = app;

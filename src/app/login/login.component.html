@@ -11,7 +11,7 @@
             <i class="far fa-3x fa-user-circle text-muted"></i>
           </h4>
           <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
-            <div class="alert alert-danger" [hidden]="!error || isLoading" translate>
+            <div class="alert alert-danger" [hidden]="!error" translate>
               Email or password incorrect.
             </div>
             <div class="form-group">

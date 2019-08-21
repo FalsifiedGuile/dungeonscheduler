@@ -7,6 +7,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MyCalendarComponent } from './my-calendar.component';
 import { MyCalendarRoutingModule } from './my-calendar-routing.module';
+import { MyCalendarService } from './my-calendar.service';
 
 @NgModule({
   imports: [

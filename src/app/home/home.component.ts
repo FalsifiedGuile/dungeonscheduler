@@ -2,19 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import { QuoteService } from './quote.service';
-
+import { Credentials, CredentialsService } from '../core/authentication/credentials.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
   quote: string | undefined;
   isLoading = false;
 
-  constructor(private quoteService: QuoteService) {}
+  constructor(private quoteService: QuoteService, private credentialsService: CredentialsService) {}
 
   ngOnInit() {
+    this.quote = this.credentialsService.credentials.email;
     this.isLoading = true;
     this.quoteService
       .getRandomQuote({ category: 'dev' })
@@ -24,7 +26,7 @@ export class HomeComponent implements OnInit {
         })
       )
       .subscribe((quote: string) => {
-        this.quote = quote;
+        //this.quote = this.credentialsService.credentials();
       });
   }
 }

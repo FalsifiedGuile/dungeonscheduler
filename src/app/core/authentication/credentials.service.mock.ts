@@ -2,7 +2,8 @@ import { Credentials } from './credentials.service';
 
 export class MockCredentialsService {
   credentials: Credentials | null = {
-    username: 'test',
+    email: 'test@test',
+    expiresIn: 367,
     token: '123'
   };
 

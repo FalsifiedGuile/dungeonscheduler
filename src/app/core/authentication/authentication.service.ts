@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-
 import { Credentials, CredentialsService } from './credentials.service';
 import { stringLiteral } from 'babel-types';
 
@@ -25,29 +24,20 @@ export interface createUserContext {
 })
 export class AuthenticationService {
   constructor(private credentialsService: CredentialsService, private httpClient: HttpClient) {}
-
   /**
    * Authenticates the user.
    * @param context The login parameters.
    * @return The user credentials.
    */
   login(context: LoginContext): Observable<Credentials> {
-    console.log(context);
     const credential = {
-      token: ''
+      email: '',
+      token: '',
+      expiresIn: 0
     };
-
-    this.httpClient
-      .post<{ email: string; token: string; expiresIn: number }>('/api/user/login', context)
-      .subscribe(response => {
-        const token = response.token;
-        if (token) {
-          credential.token = response.token;
-        }
-      });
-
     this.credentialsService.setCredentials(credential, context.remember);
-    return of(credential);
+    return this.httpClient
+      .post<{ email: string; token: string; expiresIn: number }>('/api/user/login', context)
   }
 
   /**
@@ -65,8 +55,8 @@ export class AuthenticationService {
       console.log(response);
     });
 
-    this.credentialsService.setCredentials(credential);
-    return of(credential);
+    //this.credentialsService.setCredentials(credential);
+    return this.login(context);
   }
 
   /**
@@ -75,7 +65,7 @@ export class AuthenticationService {
    */
   logout(): Observable<boolean> {
     // Customize credentials invalidation here
-    this.credentialsService.setCredentials();
+    this.credentialsService.setCredentials(null);
     return of(true);
   }
 }

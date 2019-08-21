@@ -2,7 +2,8 @@ import {
   Component,
   ChangeDetectionStrategy,
   ViewChild,
-  TemplateRef
+  TemplateRef,
+  OnInit
 } from '@angular/core';
 import {
   startOfDay,
@@ -22,6 +23,8 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView
 } from 'angular-calendar';
+import { MyCalendarService } from './my-calendar.service';
+import { finalize } from 'rxjs/operators';
 
 const colors: any = {
   red: {
@@ -44,7 +47,7 @@ const colors: any = {
   styleUrls: ['my-calendar.component.scss'],
   templateUrl: 'my-calendar.component.html'
 })
-export class MyCalendarComponent {
+export class MyCalendarComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
@@ -117,9 +120,25 @@ export class MyCalendarComponent {
     }
   ];
 
+  isLoading = false;
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
+  constructor(private modal: NgbModal, private calendarService : MyCalendarService) {}
+  
+  ngOnInit() {
+    const email = 
+    this.isLoading = true;
+    this.calendarService
+      .getMyCalendar({ email: 'a@a.a' })
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe((quote: string) => {
+        //this.quote = quote;
+      });
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
