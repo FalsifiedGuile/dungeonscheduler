@@ -12,11 +12,13 @@ import { Credentials, CredentialsService } from '../core/authentication/credenti
 export class HomeComponent implements OnInit {
   quote: string | undefined;
   isLoading = false;
-
+  
   constructor(private quoteService: QuoteService, private credentialsService: CredentialsService) {}
 
   ngOnInit() {
-    this.quote = this.credentialsService.credentials.email;
+    const credentialsKey = 'credentials';
+    const storage = sessionStorage.getItem(credentialsKey);
+    this.quote = storage;
     this.isLoading = true;
     this.quoteService
       .getRandomQuote({ category: 'dev' })

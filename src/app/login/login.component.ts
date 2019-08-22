@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, AuthenticationService, untilDestroyed } from '@app/core';
+import { Credentials, CredentialsService } from '../core/authentication/credentials.service';
 
 const log = new Logger('Login');
 
@@ -18,18 +19,28 @@ export class LoginComponent implements OnInit, OnDestroy {
   error: string | undefined;
   loginForm!: FormGroup;
   isLoading = false;
+  email: string | undefined; 
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private i18nService: I18nService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private credentialsService : CredentialsService
   ) {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    const credentialsKey = 'credentials';
+    const storage = localStorage.getItem(credentialsKey);
+    
+    if (storage) {
+      this.loginForm.patchValue({'email' : JSON.parse(storage).email}); 
+    }
+    
+  }
 
   ngOnDestroy() {}
 
@@ -50,6 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (credentials) {
             log.debug(`${credentials.email} successfully logged in`);
             this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+            this.credentialsService.setCredentials(credentials, this.loginForm.value.remember);
           }
         },
         error => {

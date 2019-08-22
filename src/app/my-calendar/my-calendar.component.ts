@@ -78,7 +78,8 @@ export class MyCalendarComponent implements OnInit {
   ];
 
   refresh: Subject<any> = new Subject();
-
+  events: CalendarEvent[] = [];
+  /*
   events: CalendarEvent[] = [
     {
       start: subDays(startOfDay(new Date()), 1),
@@ -118,7 +119,7 @@ export class MyCalendarComponent implements OnInit {
       },
       draggable: true
     }
-  ];
+  ];*/
 
   isLoading = false;
   activeDayIsOpen: boolean = true;
@@ -126,10 +127,10 @@ export class MyCalendarComponent implements OnInit {
   constructor(private modal: NgbModal, private calendarService : MyCalendarService) {}
   
   ngOnInit() {
-    const email = 
+    const email = JSON.parse(sessionStorage.getItem('credentials')).email;
     this.isLoading = true;
     this.calendarService
-      .getMyCalendar({ email: 'a@a.a' })
+      .getMyCalendar({ email: email })
       .pipe(
         finalize(() => {
           this.isLoading = false;
@@ -141,16 +142,23 @@ export class MyCalendarComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
+        console.log(events.length);
+        if (events.length === 0 ){
+          this.addEvent(date, date);
+        }
         this.activeDayIsOpen = false;
       } else {
         this.activeDayIsOpen = true;
       }
       this.viewDate = date;
+    } else {
+      
     }
   }
 
@@ -177,13 +185,13 @@ export class MyCalendarComponent implements OnInit {
     this.modal.open(this.modalContent, { size: 'lg' });
   }
 
-  addEvent(): void {
+  addEvent(start: Date, end: Date): void {
     this.events = [
       ...this.events,
       {
         title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
+        start: startOfDay(start),
+        end: endOfDay(end),
         color: colors.red,
         draggable: true,
         resizable: {

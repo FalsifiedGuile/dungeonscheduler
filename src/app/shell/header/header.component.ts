@@ -9,16 +9,20 @@ import { AuthenticationService, CredentialsService, I18nService } from '@app/cor
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  email: string | undefined;
   menuHidden = true;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private credentialsService: CredentialsService,
     private i18nService: I18nService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const credentialsKey = 'credentials';
+    const storage = sessionStorage.getItem(credentialsKey);
+    this.email = JSON.parse(storage).email;
+  }
 
   toggleMenu() {
     this.menuHidden = !this.menuHidden;

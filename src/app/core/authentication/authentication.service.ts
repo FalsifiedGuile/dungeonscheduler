@@ -23,7 +23,7 @@ export interface createUserContext {
   providedIn: 'root'
 })
 export class AuthenticationService {
-  constructor(private credentialsService: CredentialsService, private httpClient: HttpClient) {}
+  constructor(public credentialsService: CredentialsService, private httpClient: HttpClient) {}
   /**
    * Authenticates the user.
    * @param context The login parameters.
@@ -65,7 +65,8 @@ export class AuthenticationService {
    */
   logout(): Observable<boolean> {
     // Customize credentials invalidation here
-    this.credentialsService.setCredentials(null);
+    const credentialsKey = 'credentials'
+    sessionStorage.removeItem(credentialsKey);
     return of(true);
   }
 }
