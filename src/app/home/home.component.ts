@@ -8,11 +8,10 @@ import { Credentials, CredentialsService } from '../core/authentication/credenti
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-
 export class HomeComponent implements OnInit {
   quote: string | undefined;
   isLoading = false;
-  
+
   constructor(private quoteService: QuoteService, private credentialsService: CredentialsService) {}
 
   ngOnInit() {

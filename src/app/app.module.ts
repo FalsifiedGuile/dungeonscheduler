@@ -4,7 +4,6 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +31,6 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     TranslateModule.forRoot(),
     MyCalendarModule,
-    MatInputModule,
     NgbModule,
     CoreModule,
     SharedModule,

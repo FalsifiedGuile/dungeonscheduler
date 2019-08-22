@@ -36,8 +36,7 @@ export class AuthenticationService {
       expiresIn: 0
     };
     this.credentialsService.setCredentials(credential, context.remember);
-    return this.httpClient
-      .post<{ email: string; token: string; expiresIn: number }>('/api/user/login', context)
+    return this.httpClient.post<{ email: string; token: string; expiresIn: number }>('/api/user/login', context);
   }
 
   /**
@@ -65,7 +64,7 @@ export class AuthenticationService {
    */
   logout(): Observable<boolean> {
     // Customize credentials invalidation here
-    const credentialsKey = 'credentials'
+    const credentialsKey = 'credentials';
     sessionStorage.removeItem(credentialsKey);
     return of(true);
   }

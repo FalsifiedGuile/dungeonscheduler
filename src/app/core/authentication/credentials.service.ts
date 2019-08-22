@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 
 export interface Credentials {
   // Customize received credentials here
-  email: string,
-  token: string,
-  expiresIn: number
+  email: string;
+  token: string;
+  expiresIn: number;
 }
 
 const credentialsKey = 'credentials';

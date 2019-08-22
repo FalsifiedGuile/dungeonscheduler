@@ -1,28 +1,8 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ViewChild,
-  TemplateRef,
-  OnInit
-} from '@angular/core';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours
-} from 'date-fns';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarView
-} from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { MyCalendarService } from './my-calendar.service';
 import { finalize } from 'rxjs/operators';
 
@@ -124,8 +104,8 @@ export class MyCalendarComponent implements OnInit {
   isLoading = false;
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private calendarService : MyCalendarService) {}
-  
+  constructor(private modal: NgbModal, private calendarService: MyCalendarService) {}
+
   ngOnInit() {
     const email = JSON.parse(sessionStorage.getItem('credentials')).email;
     this.isLoading = true;
@@ -142,14 +122,10 @@ export class MyCalendarComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    
     if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
+      if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
         console.log(events.length);
-        if (events.length === 0 ){
+        if (events.length === 0) {
           this.addEvent(date, date);
         }
         this.activeDayIsOpen = false;
@@ -158,15 +134,10 @@ export class MyCalendarComponent implements OnInit {
       }
       this.viewDate = date;
     } else {
-      
     }
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
+  eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map(iEvent => {
       if (iEvent === event) {
         return {

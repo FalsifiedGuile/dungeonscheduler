@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   error: string | undefined;
   loginForm!: FormGroup;
   isLoading = false;
-  email: string | undefined; 
+  email: string | undefined;
 
   constructor(
     private router: Router,
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private i18nService: I18nService,
     private authenticationService: AuthenticationService,
-    private credentialsService : CredentialsService
+    private credentialsService: CredentialsService
   ) {
     this.createForm();
   }
@@ -35,11 +35,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const credentialsKey = 'credentials';
     const storage = localStorage.getItem(credentialsKey);
-    
+
     if (storage) {
-      this.loginForm.patchValue({'email' : JSON.parse(storage).email}); 
+      this.loginForm.patchValue({ email: JSON.parse(storage).email });
     }
-    
   }
 
   ngOnDestroy() {}
