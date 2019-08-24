@@ -7,7 +7,6 @@ import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: '', redirectTo: '/calendar', pathMatch: 'full' },
     { path: 'calendar', component: MyCalendarComponent, data: { title: extract('Calendar') } }
   ])
 ];

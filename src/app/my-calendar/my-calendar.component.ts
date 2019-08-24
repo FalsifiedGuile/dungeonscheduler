@@ -17,8 +17,11 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView
 } from 'angular-calendar';
-import { MyCalendarService } from './my-calendar.service';
+import { MyCalendarService, MyEvent } from './my-calendar.service';
 import { finalize } from 'rxjs/operators';
+import { Logger } from '@app/core';
+
+const log = new Logger('MyEvent');
 
 const colors: any = {
   red: {
@@ -117,25 +120,30 @@ export class MyCalendarComponent implements OnInit {
 
   isLoading = false;
   activeDayIsOpen: boolean = true;
-
+  email = '';
   constructor(private modal: NgbModal, private calendarService: MyCalendarService) {}
 
   ngOnInit() {
-    const email = JSON.parse(sessionStorage.getItem('credentials')).email;
+    this.email = JSON.parse(sessionStorage.getItem('credentials')).email;
     this.isLoading = true;
     this.calendarService
-      .getMyCalendar({ email: email })
+      .getMyCalendar({ email: this.email })
       .pipe(
         finalize(() => {
           this.isLoading = false;
         })
       )
-      .subscribe((quote: string) => {
-        //this.quote = quote;
+      .subscribe(quote => {
+        console.log(quote);
       });
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    const event: MyEvent = {
+      title: 'New event',
+      start: startOfDay(date),
+      end: endOfDay(date)
+    };
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -143,6 +151,7 @@ export class MyCalendarComponent implements OnInit {
       ) {
         console.log(events.length);
         if (events.length === 0) {
+          this.uploadMyEvent(event);
           this.addEvent(date, date);
         }
         this.activeDayIsOpen = false;
@@ -152,6 +161,22 @@ export class MyCalendarComponent implements OnInit {
       this.viewDate = date;
     } else {
     }
+  }
+
+  uploadMyEvent(event: MyEvent) {
+    this.isLoading = true;
+    const event$ = this.calendarService.addMyCalendar({ email: this.email, myEvent: event });
+    console.log(event$);
+    event$.subscribe(
+      res => {
+        if (res) {
+          log.debug(`${res.email} successfully logged in`);
+        }
+      },
+      err => {
+        log.debug(`Login error: ${err}`);
+      }
+    );
   }
 
   eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {

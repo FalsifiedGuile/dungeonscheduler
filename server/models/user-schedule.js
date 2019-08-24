@@ -1,12 +1,12 @@
-import eventCalendar from './event-schedule';
-
 const mongoose = require('mongoose');
 
 const uniqueValidator = require('mongoose-unique-validator');
 
+const EventSchedule = require('./event-schedule');
+
 const userScheduleSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  timesAvalible: { type: [eventCalendar] },
+  timesAvalible: { type: [EventSchedule.schema] },
   public: { type: Boolean, default: false }
 });
 

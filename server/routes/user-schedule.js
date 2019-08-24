@@ -1,12 +1,13 @@
 const express = require('express');
 
-const UserSchedule = require('../models/event-schedule');
+const UserSchedule = require('../models/user-schedule');
 
 const router = express.Router();
 
-router.get('', (req, res) => {
+router.get('/user/:email', (req, res) => {
   let fetchedUser;
-  UserSchedule.findOne({ email: req.body.email })
+  console.log(req.params);
+  UserSchedule.findOne({ email: req.params.email })
     .then(schedule => {
       if (!schedule) {
         return res.status(404).json({
@@ -24,11 +25,14 @@ router.get('', (req, res) => {
     });
 });
 
-router.post('add-event', (req, res) => {
+router.post('/add-event', (req, res) => {
   let fetchedUser;
-  UserSchedule.findOneandUpdate(
+  console.log(req.body);
+  console.log(req.body);
+
+  UserSchedule.findOneAndUpdate(
     { email: req.body.email },
-    { $push: { timesAvalible: req.body.date } }
+    { $push: { timesAvalible: req.body.myEvent } }
   )
     .then(schedule => {
       fetchedUser = schedule;

@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const eventSchema = mongoose.Schema({
   start: Date,
   end: Date,
-  title: 'A 3 day event',
+  title: String,
   color: String,
-  actions: this.actions,
-  allDay: true,
+  allDay: Boolean,
   resizable: {
-    beforeStart: true,
-    afterEnd: true
+    beforeStart: Boolean,
+    afterEnd: Boolean
   },
-  draggable: true,
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  draggable: Boolean,
+  email: { type: String, required: Boolean, unique: Boolean }
 });
 
-module.exports = mongoose.model('Event-date', userSchema);
+module.exports = mongoose.model('EventSchedule', eventSchema);

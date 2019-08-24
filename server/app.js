@@ -19,7 +19,7 @@ mongoose
     console.log('Connection failed!');
   });
 mongoose.set('useCreateIndex', true);
-
+mongoose.set('useFindAndModify', false);
 app.post('/api/posts', (req, res) => {
   res.status(201).json({
     message: 'Post added successfuly'
@@ -32,7 +32,7 @@ app.post('/api/posts', (req, res) => {
 //     message: "Posts fetched succesfully!",
 //   });
 // });
-app.use('/api/schedule', userScheduleRoutes);
+app.use('/api/calendar', userScheduleRoutes);
 app.use('/api/user', userRoutes);
 
 module.exports = app;
