@@ -1,24 +1,42 @@
-const express = require("express");
+const express = require('express');
 
-const User = require("../models/user");
+const UserSchedule = require('../models/event-schedule');
 
 const router = express.Router();
 
-router.get("", (req, res, next) => {
+router.get('', (req, res) => {
   let fetchedUser;
-  User-schedule.findOne({ email: req.body.email })
+  UserSchedule.findOne({ email: req.body.email })
     .then(schedule => {
-      if (!user) {
+      if (!schedule) {
         return res.status(404).json({
-          message: "No schedules for user"
+          message: 'No schedules for user'
         });
       }
-      fetchedUser = user;
-      res.status(200).json(fetchedUser.timesAvalible);
-    }).catch(err => {
+      fetchedUser = schedule;
+      return res.status(200).json(fetchedUser.timesAvalible);
+    })
+    .catch(err => {
       return res.status(401).json({
-        message: "Get schedule failed"
+        message: 'Get schedule failed',
+        error: err
       });
+    });
+});
+
+router.post('add-event', (req, res) => {
+  let fetchedUser;
+  UserSchedule.findOneandUpdate(
+    { email: req.body.email },
+    { $push: { timesAvalible: req.body.date } }
+  )
+    .then(schedule => {
+      fetchedUser = schedule;
+      return res.status(201).json({ previousSchedule: fetchedUser.timesAvalible });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(400).json({ message: 'Bad syntax on update', error: err });
     });
 });
 

@@ -13,7 +13,13 @@ describe('SignupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule, RouterTestingModule, TranslateModule.forRoot(), ReactiveFormsModule, CoreModule],
+      imports: [
+        NgbModule,
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        ReactiveFormsModule,
+        CoreModule
+      ],
       declarations: [SignupComponent]
     }).compileComponents();
   }));

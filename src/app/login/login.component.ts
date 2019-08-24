@@ -59,7 +59,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         credentials => {
           if (credentials) {
             log.debug(`${credentials.email} successfully logged in`);
-            this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+            this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], {
+              replaceUrl: true
+            });
             this.credentialsService.setCredentials(credentials, this.loginForm.value.remember);
           }
         },

@@ -1,5 +1,6 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
+/* eslint-disable */
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 
@@ -23,7 +24,7 @@ exports.config = {
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 30000,
-    print: function() {}
+    print() {}
   },
   onPrepare() {
     require('ts-node').register({

@@ -44,21 +44,28 @@
                 />
                 <span hidden>Password</span>
                 <small
-                  [hidden]="signupForm.controls.password.valid || signupForm.controls.password.untouched"
+                  [hidden]="
+                    signupForm.controls.password.valid || signupForm.controls.password.untouched
+                  "
                   class="text-danger"
                 >
                   Password is required
                 </small>
               </label>
             </div>
-            <button class="btn btn-primary w-100" type="submit" [disabled]="signupForm.invalid || isLoading">
+            <button
+              class="btn btn-primary w-100"
+              type="submit"
+              [disabled]="signupForm.invalid || isLoading"
+            >
               <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
               <span>Sign up</span>
             </button>
           </form>
         </div>
         <div class="login">
-          Have an account? <a class="text-uppercase" routerLink="/login" routerLinkActive="active">Login</a>
+          Have an account?
+          <a class="text-uppercase" routerLink="/login" routerLinkActive="active">Login</a>
         </div>
       </div>
     </div>

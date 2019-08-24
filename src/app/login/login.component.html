@@ -44,7 +44,9 @@
                 />
                 <span hidden translate>Password</span>
                 <small
-                  [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
+                  [hidden]="
+                    loginForm.controls.password.valid || loginForm.controls.password.untouched
+                  "
                   class="text-danger"
                   translate
                 >
@@ -58,14 +60,19 @@
                 </label>
               </div>
             </div>
-            <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid || isLoading">
+            <button
+              class="btn btn-primary w-100"
+              type="submit"
+              [disabled]="loginForm.invalid || isLoading"
+            >
               <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
               <span translate>Login</span>
             </button>
           </form>
         </div>
         <div class="signup">
-          New here? <a class="text-uppercase" routerLink="/signup" routerLinkActive="active">Sign up</a>
+          New here?
+          <a class="text-uppercase" routerLink="/signup" routerLinkActive="active">Sign up</a>
         </div>
       </div>
     </div>

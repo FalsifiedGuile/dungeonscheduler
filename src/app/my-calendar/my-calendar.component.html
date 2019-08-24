@@ -29,13 +29,25 @@
   </div>
   <div class="col-md-4">
     <div class="btn-group">
-      <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Month)"
+        [class.active]="view === CalendarView.Month"
+      >
         Month
       </div>
-      <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Week)"
+        [class.active]="view === CalendarView.Week"
+      >
         Week
       </div>
-      <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+      <div
+        class="btn btn-primary"
+        (click)="setView(CalendarView.Day)"
+        [class.active]="view === CalendarView.Day"
+      >
         Day
       </div>
     </div>
@@ -102,7 +114,12 @@
     <tbody>
       <tr *ngFor="let event of events">
         <td>
-          <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" />
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="event.title"
+            (keyup)="refresh.next()"
+          />
         </td>
         <td>
           <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()" />

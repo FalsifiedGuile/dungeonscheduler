@@ -55,8 +55,12 @@ describe('HttpCacheService', () => {
       httpCacheService.setCacheData('/hoho', response);
 
       // Assert
-      expect((httpCacheService.getHttpCacheEntry('/popo') as HttpCacheEntry).lastUpdated).toBe(date);
-      expect((httpCacheService.getHttpCacheEntry('/hoho') as HttpCacheEntry).lastUpdated).not.toBe(date);
+      expect((httpCacheService.getHttpCacheEntry('/popo') as HttpCacheEntry).lastUpdated).toBe(
+        date
+      );
+      expect((httpCacheService.getHttpCacheEntry('/hoho') as HttpCacheEntry).lastUpdated).not.toBe(
+        date
+      );
     });
   });
 
