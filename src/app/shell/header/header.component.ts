@@ -21,7 +21,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     const credentialsKey = 'credentials';
     const storage = sessionStorage.getItem(credentialsKey);
-    this.email = JSON.parse(storage).email;
+    if (storage) {
+      this.email = JSON.parse(storage).email;
+    }
   }
 
   toggleMenu() {

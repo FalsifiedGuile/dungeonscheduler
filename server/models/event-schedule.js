@@ -11,7 +11,7 @@ const eventSchema = mongoose.Schema({
     afterEnd: Boolean
   },
   draggable: Boolean,
-  email: { type: String, required: Boolean, unique: Boolean }
+  email: { type: String, required: true, unique: true }
 });
 
 module.exports = mongoose.model('EventSchedule', eventSchema);

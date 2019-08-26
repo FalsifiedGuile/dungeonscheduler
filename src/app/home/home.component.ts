@@ -19,15 +19,18 @@ export class HomeComponent implements OnInit {
     const storage = sessionStorage.getItem(credentialsKey);
     this.quote = storage;
     this.isLoading = true;
-    this.quoteService
-      .getRandomQuote({ category: 'dev' })
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe((quote: string) => {
-        //this.quote = this.credentialsService.credentials();
-      });
+    this.isLoading = false;
+    this.quote = '';
+    console.log(this.credentialsService.credentials);
+    // this.quoteService
+    //   .getRandomQuote({ category: 'dev' })
+    //   .pipe(
+    //     finalize(() => {
+    //       this.isLoading = false;
+    //     })
+    //   )
+    //   .subscribe((quote: string) => {
+    //     this.quote = 'nice';
+    //   });
   }
 }

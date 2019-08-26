@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, AuthenticationService, untilDestroyed } from '@app/core';
+import { Credentials, CredentialsService } from '../core/authentication/credentials.service';
 
 const log = new Logger('Signup');
 
@@ -23,7 +24,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private credentialsService: CredentialsService
   ) {
     this.createForm();
   }
@@ -48,10 +50,12 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe(
         credentials => {
           if (credentials) {
-            //log.debug(`${credentials.username} successfully logged in`);
+            log.debug(`${credentials.email} successfully logged in`);
             this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], {
               replaceUrl: true
             });
+            this.credentialsService.setCredentials(credentials, true);
+            console.log('my credientials: ' + this.credentialsService.credentials.email);
           }
         },
         error => {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Credentials, CredentialsService } from './credentials.service';
 import { stringLiteral } from 'babel-types';
+import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 export interface LoginContext {
   email: string;
@@ -50,15 +51,15 @@ export class AuthenticationService {
   createUser(context: createUserContext): Observable<Credentials> {
     console.log(context);
     const credential = {
-      token: ''
+      email: '',
+      token: '',
+      expiresIn: 0
     };
-
-    this.httpClient.post('/api/user/signup', context).subscribe(response => {
-      console.log(response);
-    });
-
-    //this.credentialsService.setCredentials(credential);
-    return this.login(context);
+    this.credentialsService.setCredentials(credential);
+    return this.httpClient.post<{ email: string; token: string; expiresIn: number }>(
+      '/api/user/signup',
+      context
+    );
   }
 
   /**
@@ -67,8 +68,7 @@ export class AuthenticationService {
    */
   logout(): Observable<boolean> {
     // Customize credentials invalidation here
-    const credentialsKey = 'credentials';
-    sessionStorage.removeItem(credentialsKey);
+    this.credentialsService.setCredentials(null);
     return of(true);
   }
 }
