@@ -1,4 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ViewChild,
+  TemplateRef,
+  OnInit,
+  NgZone
+} from '@angular/core';
 import {
   startOfDay,
   endOfDay,
@@ -19,7 +27,7 @@ import {
 } from 'angular-calendar';
 import { MyCalendarService, MyEvent } from './my-calendar.service';
 import { finalize } from 'rxjs/operators';
-import { Logger } from '@app/core';
+import { Logger, untilDestroyed } from '@app/core';
 
 const log = new Logger('MyEvent');
 
@@ -76,73 +84,57 @@ export class MyCalendarComponent implements OnInit {
 
   refresh: Subject<any> = new Subject();
   events: CalendarEvent[] = [];
-  /*
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
-  ];*/
 
   isLoading = false;
   activeDayIsOpen: boolean = true;
   email = '';
-  constructor(private modal: NgbModal, private calendarService: MyCalendarService) {}
+  constructor(
+    private modal: NgbModal,
+    private calendarService: MyCalendarService,
+    private ngZone: NgZone,
+    private cRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.email = JSON.parse(sessionStorage.getItem('credentials')).email;
-    this.isLoading = true;
-    this.calendarService
-      .getMyCalendar({ email: this.email })
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(quote => {
-        console.log(quote);
-      });
+    this.getCalendar();
+  }
+
+  getCalendar() {
+    this.calendarService.getMyCalendar({ email: this.email }).subscribe(event => {
+      this.isLoading = true;
+      const arrayLength = event.length;
+      var events: CalendarEvent[] = [];
+      for (var i = 0; i < arrayLength; i++) {
+        events = [
+          ...events,
+          {
+            title: event[i].title,
+            start: new Date(event[i].start),
+            end: new Date(event[i].end),
+            color: eval('colors.' + event[i].color),
+            draggable: event[i].draggable,
+            resizable: event[i].resizable
+          }
+        ];
+      }
+      console.log(events);
+      this.events = events;
+      this.cRef.detectChanges();
+    });
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     const event: MyEvent = {
       title: 'New event',
       start: startOfDay(date),
-      end: endOfDay(date)
+      end: endOfDay(date),
+      color: 'red',
+      draggable: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      }
     };
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -164,7 +156,6 @@ export class MyCalendarComponent implements OnInit {
   }
 
   uploadMyEvent(event: MyEvent) {
-    this.isLoading = true;
     const event$ = this.calendarService.addMyCalendar({ email: this.email, myEvent: event });
     console.log(event$);
     event$.subscribe(

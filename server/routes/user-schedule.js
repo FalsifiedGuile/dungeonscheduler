@@ -28,7 +28,7 @@ router.get('/user/:email', (req, res) => {
 router.post('/add-event', (req, res) => {
   let fetchedUser;
   console.log(req.body);
-  console.log(req.body);
+  console.log(req.body.myEvent);
 
   UserSchedule.findOneAndUpdate(
     { email: req.body.email },

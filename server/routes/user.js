@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const emailCheck = require('email-check');
 const User = require('../models/user');
 const UserSchedule = require('../models/user-schedule');
 
